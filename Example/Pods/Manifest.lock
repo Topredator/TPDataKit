@@ -1,0 +1,21 @@
+PODS:
+  - TPDataKit (1.0.0):
+    - TPDataKit/Base (= 1.0.0)
+    - TPDataKit/UIKit (= 1.0.0)
+  - TPDataKit/Base (1.0.0)
+  - TPDataKit/UIKit (1.0.0):
+    - TPDataKit/Base
+
+DEPENDENCIES:
+  - TPDataKit (from `../`)
+
+EXTERNAL SOURCES:
+  TPDataKit:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  TPDataKit: 138a3437aa9aae40482b41754474e00c660cb574
+
+PODFILE CHECKSUM: feac9a1eeb7519fc4bc8173534cb95832ed08486
+
+COCOAPODS: 1.5.3

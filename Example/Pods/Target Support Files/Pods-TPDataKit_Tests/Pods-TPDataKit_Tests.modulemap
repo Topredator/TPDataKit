@@ -1,0 +1,6 @@
+framework module Pods_TPDataKit_Tests {
+  umbrella header "Pods-TPDataKit_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
