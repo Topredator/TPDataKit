@@ -11,9 +11,10 @@
 #import "TextRow.h"
 #import "TestViewController.h"
 
+
+
 @interface TPViewController ()
 @property (strong, nonatomic) IBOutlet UITableView *myTable;
-
 @end
 
 @implementation TPViewController
@@ -45,6 +46,7 @@
     }
     [self.myTable.TPProxy reloadData:@[section]];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

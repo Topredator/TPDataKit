@@ -24,6 +24,7 @@
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		949CD1C8222D5A26006A635F /* TextRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 949CD1C7222D5A26006A635F /* TextRow.m */; };
 		949CD1CB222D5A35006A635F /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 949CD1CA222D5A35006A635F /* TestViewController.m */; };
+		94A5809D223010BC00C6E08B /* TPPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A5809C223010BC00C6E08B /* TPPerson.m */; };
 		B6635DC65E240A09C7A8DFB5 /* Pods_TPDataKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76405EF7A112E760EA3B5B1B /* Pods_TPDataKit_Example.framework */; };
 		CDE012B18A3CED38C8CDC196 /* Pods_TPDataKit_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41A1122F35DF69140C32B2A7 /* Pods_TPDataKit_Tests.framework */; };
 /* End PBXBuildFile section */
@@ -68,6 +69,8 @@
 		949CD1C7222D5A26006A635F /* TextRow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextRow.m; sourceTree = "<group>"; };
 		949CD1C9222D5A35006A635F /* TestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		949CD1CA222D5A35006A635F /* TestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		94A5809B223010BC00C6E08B /* TPPerson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TPPerson.h; sourceTree = "<group>"; };
+		94A5809C223010BC00C6E08B /* TPPerson.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TPPerson.m; sourceTree = "<group>"; };
 		CE6254F473FE6BB076D59E6A /* Pods-TPDataKit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TPDataKit_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TPDataKit_Example/Pods-TPDataKit_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		D7243342ED8779CB51E4B698 /* Pods-TPDataKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TPDataKit_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TPDataKit_Tests/Pods-TPDataKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		E5982F290BB32618F478FA73 /* Pods-TPDataKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TPDataKit_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-TPDataKit_Example/Pods-TPDataKit_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -154,6 +157,8 @@
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* TPViewController.h */,
 				6003F5A6195388D20070C39A /* TPViewController.m */,
+				94A5809B223010BC00C6E08B /* TPPerson.h */,
+				94A5809C223010BC00C6E08B /* TPPerson.m */,
 				949CD1C6222D5A26006A635F /* TextRow.h */,
 				949CD1C7222D5A26006A635F /* TextRow.m */,
 				949CD1C9222D5A35006A635F /* TestViewController.h */,
@@ -377,6 +382,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94A5809D223010BC00C6E08B /* TPPerson.m in Sources */,
 				6003F59E195388D20070C39A /* TPAppDelegate.m in Sources */,
 				949CD1C8222D5A26006A635F /* TextRow.m in Sources */,
 				6003F5A7195388D20070C39A /* TPViewController.m in Sources */,

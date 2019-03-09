@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'TPDataKit'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'The purpose of TPDataKit is to provide some common tools'
 
 # This description is used to generate tags and improve search results.
@@ -25,6 +25,7 @@ TPDataKit 是一个数据工具类的库
   
   s.subspec 'Base' do |ss|
       ss.source_files = 'TPDataKit/Classes/Base/**/*'
+      ss.private_header_files = 'TPDataKit/Classes/Base/KVO/TPCustomKVO.h'
   end
   s.subspec 'UIKit' do |ss|
       ss.source_files = 'TPDataKit/Classes/UIKit/**/*'

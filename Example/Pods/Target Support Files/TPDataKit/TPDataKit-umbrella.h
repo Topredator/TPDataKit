@@ -11,6 +11,8 @@
 #endif
 
 #import "TPDataKit.h"
+#import "NSObject+TPCustomKVO.h"
+#import "TPObservingChangeOptions.h"
 #import "NSArray+TPSafety.h"
 #import "NSDictionary+TPSafety.h"
 #import "NSObject+TPNotification.h"

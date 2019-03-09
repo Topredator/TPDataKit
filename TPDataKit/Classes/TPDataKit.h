@@ -14,6 +14,9 @@
 #import "TPModelID.h"
 #import "TPMutableArray.h"
 
+#import "TPObservingChangeOptions.h"
+#import "NSObject+TPCustomKVO.h"
+
 /// UIKit
 #import "TPTableRow.h"
 #import "TPTableSection.h"
