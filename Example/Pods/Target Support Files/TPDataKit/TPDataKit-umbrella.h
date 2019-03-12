@@ -26,6 +26,7 @@
 #import "TPTableSection.h"
 #import "TPTableViewProxy.h"
 #import "TPKitNavigationController.h"
+#import "UIView+TPTapAction.h"
 
 FOUNDATION_EXPORT double TPDataKitVersionNumber;
 FOUNDATION_EXPORT const unsigned char TPDataKitVersionString[];

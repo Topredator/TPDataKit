@@ -10,6 +10,9 @@
 #import "TPPerson.h"
 
 #import "NSObject+TPCustomKVO.h"
+
+
+
 @interface TestViewController ()
 @property (nonatomic, strong) TPPerson *person;
 @end
@@ -44,5 +47,11 @@
     
     self.person.rect = CGRectMake(0, 0, 10, 10);
     self.person.rect = CGRectMake(1, 1, 11, 11);
+    
+    /// tap点击
+    [self.view TPTapActionWithBlock:^{
+        NSLog(@"");
+    }];
+    
 }
 @end

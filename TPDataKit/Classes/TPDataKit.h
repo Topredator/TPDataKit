@@ -22,3 +22,4 @@
 #import "TPTableSection.h"
 #import "TPTableViewProxy.h"
 #import "TPKitNavigationController.h"
+#import "UIView+TPTapAction.h"
