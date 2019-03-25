@@ -11,12 +11,13 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-
+static NSString *kvoObserverName;
 /// 子类前缀
 static NSString * const TPCustomKVOPrefix = @"TPNotify_";
 
 @interface NSObject(TPCustomKVOPrivate)
 - (TPCustomKVO *)TPCustomKVO;
+//- (NSMapTable *)TPKVOMap;
 @end
 
 #pragma mark ==================  Common method  ==================
@@ -82,6 +83,11 @@ static NSString *_getStructTypeWithTypeEncode(NSString *typeEncode){
 @interface TPCustomKVO ()
 /// 被观察者对象
 @property (nonatomic, weak) NSObject *observed;
+@property (nonatomic, copy) NSString *observerName;
+
+
+@property (nonatomic, strong) NSMapTable *observerMap;
+
 @property (nonatomic, strong) NSMutableDictionary <NSString *, _TPObserverInfo_ *>*infoContainer;
 /// 派生类 类名
 @property (nonatomic, copy) NSString *childClassName;
@@ -101,11 +107,21 @@ static Class _originClass(id obj)
     }
 }
 /// 根据setter selector 获取Info对象
-static _TPObserverInfo_ *fetchInfoObjectFromSetterSEL(id obj, SEL sel) {
+static NSMutableArray<_TPObserverInfo_ *> *fetchInfoObjectFromSetterSEL(id obj, SEL sel) {
     NSString *setterSELStr = NSStringFromSelector(sel);
     NSString *keyPath = _getKeyPathWithSetterSel(setterSELStr);
-    TPCustomKVO *customKVO = [obj TPCustomKVO];
-    return [customKVO.infoContainer objectForKey:keyPath];
+    NSMutableArray *infos = @[].mutableCopy;
+    NSMutableDictionary *kvoMap = [obj TPKVOMap];
+    for (NSString *name in kvoMap.allKeys) {
+        TPCustomKVO *kvo = kvoMap[name];
+        _TPObserverInfo_ *info = [kvo.infoContainer objectForKey:keyPath];
+        if (info) {
+            [infos addObject:info];
+        }
+    }
+    return infos;
+//    TPCustomKVO *customKVO = [[obj TPKVOMap] valueForKey:kvoObserverName];
+//    return [customKVO.infoContainer objectForKey:keyPath];
 }
 
 /// 当进行赋值操作时，触发block
@@ -133,37 +149,42 @@ static void _childSetterNotify(_TPObserverInfo_ *info, id obj, NSString *keyPath
 
 /// 当被观察的属性为id类型时，key的setter方法会指向此方法
 static void _childSetterObj(id obj, SEL sel, id v) {
-    _TPObserverInfo_ *info = fetchInfoObjectFromSetterSEL(obj, sel);
-    /// 重复值过滤
-    if ([obj tpIgnoreDuplicateValues] && info.oldValue == v) return;
-    id value = v;
-    if (info.isCopy) {
-        value = [value copy];
-    }
-    if (info.isNonatomic) {
-        @synchronized (info) {
+    NSMutableArray <_TPObserverInfo_ *>*infos = fetchInfoObjectFromSetterSEL(obj, sel);
+    
+    for (_TPObserverInfo_ *info in infos) {
+        /// 重复值过滤
+        if ([obj tpIgnoreDuplicateValues] && info.oldValue == v) return;
+        id value = v;
+        if (info.isCopy) {
+            value = [value copy];
+        }
+        if (info.isNonatomic) {
+            @synchronized (info) {
+                ((void (*)(id, SEL, id))info._superMethod)(obj, sel, value);
+            }
+        } else {
             ((void (*)(id, SEL, id))info._superMethod)(obj, sel, value);
         }
-    } else {
-        ((void (*)(id, SEL, id))info._superMethod)(obj, sel, value);
+        /// 进行通知
+        _childSetterNotify(info, obj, info.keyPath, value);
     }
-    /// 进行通知
-    _childSetterNotify(info, obj, info.keyPath, value);
 }
 
 /// 为数值类型的key定义通用宏 ，与_childSetterObj只是类型不同
 #define TP_Setter_Number(type, TypeSet, typeGet) \
 static void _childSetter##TypeSet(id obj, SEL sel, type v) { \
-    _TPObserverInfo_ *info = fetchInfoObjectFromSetterSEL(obj, sel); \
-    if ([obj tpIgnoreDuplicateValues] && [info.oldValue typeGet##Value] == v) return; \
-    if (!info.isNonatomic) { \
-        @synchronized(info) { \
+    NSMutableArray <_TPObserverInfo_ *>*infos = fetchInfoObjectFromSetterSEL(obj, sel); \
+    for (_TPObserverInfo_ *info in infos) { \
+        if ([obj tpIgnoreDuplicateValues] && [info.oldValue typeGet##Value] == v) return; \
+        if (!info.isNonatomic) { \
+            @synchronized(info) { \
             ((void (*)(id, SEL, type))info._superMethod)(obj, sel, v); \
         } \
     } else { \
         ((void (*)(id, SEL, type))info._superMethod)(obj, sel, v); \
     } \
-    _childSetterNotify(info, obj, info.keyPath, [NSNumber numberWith##TypeSet:v]);\
+_childSetterNotify(info, obj, info.keyPath, [NSNumber numberWith##TypeSet:v]);\
+    }\
 }
 
 TP_Setter_Number(char, Char, char)
@@ -184,16 +205,18 @@ TP_Setter_Number(bool, Bool, bool)
 
 #define TP_Setter_Structer(type, equalMethod) \
 static void _childSetter##type(id obj, SEL sel, type v) { \
-    _TPObserverInfo_ *info = fetchInfoObjectFromSetterSEL(obj, sel); \
-    if ([obj tpIgnoreDuplicateValues] && equalMethod([info.oldValue type##Value], v)) return; \
-    if (!info.isNonatomic) { \
-        @synchronized (info) { \
-        ((void (*)(id, SEL, type))info._superMethod)(obj, sel, v); \
+    NSMutableArray <_TPObserverInfo_ *>*infos = fetchInfoObjectFromSetterSEL(obj, sel); \
+    for (_TPObserverInfo_ *info in infos) { \
+        if ([obj tpIgnoreDuplicateValues] && equalMethod([info.oldValue type##Value], v)) return; \
+        if (!info.isNonatomic) { \
+            @synchronized (info) { \
+                ((void (*)(id, SEL, type))info._superMethod)(obj, sel, v); \
+            } \
+        } else { \
+            ((void (*)(id, SEL, type))info._superMethod)(obj, sel, v); \
         } \
-    } else { \
-        ((void (*)(id, SEL, type))info._superMethod)(obj, sel, v); \
-    } \
-    _childSetterNotify(info, obj, info.keyPath, [NSValue valueWith##type:v]);\
+        _childSetterNotify(info, obj, info.keyPath, [NSValue valueWith##type:v]);\
+    }\
 }
 TP_Setter_Structer(CGPoint, CGPointEqualToPoint)
 TP_Setter_Structer(CGSize, CGSizeEqualToSize)
@@ -208,20 +231,17 @@ TP_Setter_Structer(UIEdgeInsets, UIEdgeInsetsEqualToEdgeInsets)
 TP_Setter_Structer(UIOffset, UIOffsetEqualToOffset)
 
 @implementation TPCustomKVO
-- (instancetype)initWithObserved:(NSObject *)observed {
-    if (!observed) return nil;
+- (instancetype)initWithObserved:(NSObject *)observed observerName:(NSString *)observerName {
+    if (!observed || !observerName)  return nil;
     if (self = [super init]) {
         self.observed = observed;
+        self.observerName = observerName;
         self.infoContainer = @{}.mutableCopy;
         NSString *className = NSStringFromClass(observed.class);
         /// 派生类的类名 如(TPNotify_Obj)
         self.childClassName = [className hasPrefix:TPCustomKVOPrefix] ? className : [TPCustomKVOPrefix stringByAppendingString:className];
     }
     return self;
-}
-- (void)dealloc {
-    NSLog(@"dealloc");
-    [self removeAllObservers];
 }
 #pragma mark ==================  Private method  ==================
 /// 是否是正在观察的类
@@ -409,14 +429,14 @@ TP_Setter_Structer(UIOffset, UIOffsetEqualToOffset)
         self.tpPrefixClass = prefixClass;
     } ;
     //派生类的set方法，是否与自己创建的setter方法(info._childMethod)地址一致，如果不是需要进行替换
-    BOOL needReplace = YES;
+    BOOL needAdd = YES;
     Method currentSetterMethod = class_getInstanceMethod(prefixClass, info._setSel);
     if (currentSetterMethod != NULL) {
         IMP currentSetterIMP = method_getImplementation(currentSetterMethod);
-        needReplace = currentSetterIMP != info._childMethod;
+        needAdd = currentSetterIMP != info._childMethod;
     }
-    if (needReplace) {
-        class_replaceMethod(prefixClass, info._setSel, info._childMethod, info._childMethodTypeCoding.UTF8String);
+    if (needAdd) {
+        class_addMethod(prefixClass, info._setSel, info._childMethod, info._childMethodTypeCoding.UTF8String);
         /// isa指针回指 源类
         Method classMethod = class_getInstanceMethod([self tpOriginClass], @selector(class));
         const char *types = method_getTypeEncoding(classMethod);
@@ -441,6 +461,12 @@ TP_Setter_Structer(UIOffset, UIOffsetEqualToOffset)
     }
     return object_getClass(self.observed);
 }
+- (NSMapTable *)observerMap {
+    if (!_observerMap) {
+        _observerMap = [NSMapTable strongToWeakObjectsMapTable];
+    }
+    return _observerMap;
+}
 #pragma mark ==================  Public method  ==================
 - (void)addObserverForKeyPath:(NSString *)keyPath options:(TPObservingChangeOptions)options block:(TPCustomKVOBlock)block {
     // 参数检测
@@ -463,13 +489,10 @@ TP_Setter_Structer(UIOffset, UIOffsetEqualToOffset)
     if (!info) return;
     /// 删除infoContainer中keyPath对应的info对象
     [self removeInfoWithKeyPath:keyPath];
-    /// 回复method，因没有removeMethod方法，用replaceMethod达到相同的效果
-    class_replaceMethod([self tpPrefixClass], info._setSel, info._superMethod, info._childMethodTypeCoding.UTF8String);
-}
-- (void)removeAllObservers {
-    __block NSMutableDictionary *mdict = self.infoContainer;
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        mdict = nil;
-    });
+    
+    if (self.infoContainer.count == 0) {
+        [self.observed.TPKVOMap removeObjectForKey:self.observerName];
+    }
+    
 }
 @end

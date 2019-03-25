@@ -22,6 +22,7 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		94612B2B224786A200319D48 /* TPKVOTestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 94612B2A224786A200319D48 /* TPKVOTestVC.m */; };
 		949CD1C8222D5A26006A635F /* TextRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 949CD1C7222D5A26006A635F /* TextRow.m */; };
 		949CD1CB222D5A35006A635F /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 949CD1CA222D5A35006A635F /* TestViewController.m */; };
 		94A5809D223010BC00C6E08B /* TPPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A5809C223010BC00C6E08B /* TPPerson.m */; };
@@ -65,6 +66,8 @@
 		759FC11A053DD826E33E93FC /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		76405EF7A112E760EA3B5B1B /* Pods_TPDataKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TPDataKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		94612B29224786A200319D48 /* TPKVOTestVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TPKVOTestVC.h; sourceTree = "<group>"; };
+		94612B2A224786A200319D48 /* TPKVOTestVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TPKVOTestVC.m; sourceTree = "<group>"; };
 		949CD1C6222D5A26006A635F /* TextRow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextRow.h; sourceTree = "<group>"; };
 		949CD1C7222D5A26006A635F /* TextRow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextRow.m; sourceTree = "<group>"; };
 		949CD1C9222D5A35006A635F /* TestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
@@ -163,6 +166,8 @@
 				949CD1C7222D5A26006A635F /* TextRow.m */,
 				949CD1C9222D5A35006A635F /* TestViewController.h */,
 				949CD1CA222D5A35006A635F /* TestViewController.m */,
+				94612B29224786A200319D48 /* TPKVOTestVC.h */,
+				94612B2A224786A200319D48 /* TPKVOTestVC.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -382,6 +387,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94612B2B224786A200319D48 /* TPKVOTestVC.m in Sources */,
 				94A5809D223010BC00C6E08B /* TPPerson.m in Sources */,
 				6003F59E195388D20070C39A /* TPAppDelegate.m in Sources */,
 				949CD1C8222D5A26006A635F /* TextRow.m in Sources */,

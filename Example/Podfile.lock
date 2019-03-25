@@ -1,9 +1,9 @@
 PODS:
-  - TPDataKit (1.0.1):
-    - TPDataKit/Base (= 1.0.1)
-    - TPDataKit/UIKit (= 1.0.1)
-  - TPDataKit/Base (1.0.1)
-  - TPDataKit/UIKit (1.0.1):
+  - TPDataKit (1.0.2):
+    - TPDataKit/Base (= 1.0.2)
+    - TPDataKit/UIKit (= 1.0.2)
+  - TPDataKit/Base (1.0.2)
+  - TPDataKit/UIKit (1.0.2):
     - TPDataKit/Base
 
 DEPENDENCIES:
@@ -14,7 +14,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  TPDataKit: 64b9399ba1540c33c5f0aeb5859a53f493c7f8d2
+  TPDataKit: 89e3c1bdbd7dc1e60a02b9227de5eb1f36c0731c
 
 PODFILE CHECKSUM: feac9a1eeb7519fc4bc8173534cb95832ed08486
 

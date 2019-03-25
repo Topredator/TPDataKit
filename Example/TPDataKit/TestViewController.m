@@ -10,7 +10,7 @@
 #import "TPPerson.h"
 
 #import "NSObject+TPCustomKVO.h"
-
+#import "TPKVOTestVC.h"
 
 
 @interface TestViewController ()
@@ -19,24 +19,24 @@
 
 @implementation TestViewController
 - (void)dealloc {
-//    [self.person TPRemoveObserverForKeyPath:@"name"];
-//    [self.person TPRemoveObserverForKeyPath:@"age"];
+    [self.person TPRemoveObserver:self keyPath:@"name"];
+    [self.person TPRemoveObserver:self keyPath:@"age"];
+    [self.person TPRemoveObserver:self keyPath:@"rect"];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"测试kvo";
     self.view.backgroundColor = UIColor.whiteColor;
-    self.tpNavigationItem.navigationBarHidden = YES;
-    
     self.person = [TPPerson new];
-//    self.person.tpIgnoreDuplicateValues = YES;
-    [self.person TPAddObserverForKeyPath:@"name" options:TPObservingChangeOptionsOld | TPObservingChangeOptionsNew block:^(NSObject *obj, NSString *keyPath, NSDictionary *change) {
+    self.person.tpIgnoreDuplicateValues = YES;
+    
+    [self.person TPAddObserver:self keyPath:@"name" options:TPObservingChangeOptionsOld | TPObservingChangeOptionsNew block:^(NSObject *obj, NSString *keyPath, NSDictionary *change) {
         NSLog(@"object = %@, keyPath = %@, change = %@", obj, keyPath, change);
     }];
-    [self.person TPAddObserverForKeyPath:@"age" options:TPObservingChangeOptionsOld | TPObservingChangeOptionsNew block:^(NSObject *obj, NSString *keyPath, NSDictionary *change) {
+    [self.person TPAddObserver:self keyPath:@"age" options:TPObservingChangeOptionsOld | TPObservingChangeOptionsNew block:^(NSObject *obj, NSString *keyPath, NSDictionary *change) {
         NSLog(@"object = %@, keyPath = %@, change = %@", obj, keyPath, change);
     }];
-//    [self.person TPRemoveObserverForKeyPath:@"age"];
-    [self.person TPAddObserverForKeyPath:@"rect" options:TPObservingChangeOptionsOld | TPObservingChangeOptionsNew block:^(NSObject *obj, NSString *keyPath, NSDictionary *change) {
+    [self.person TPAddObserver:self keyPath:@"rect" options:TPObservingChangeOptionsOld | TPObservingChangeOptionsNew block:^(NSObject *obj, NSString *keyPath, NSDictionary *change) {
         NSLog(@"object = %@, keyPath = %@, change = %@", obj, keyPath, change);
     }];
     self.person.name = @"Topredator";
@@ -48,10 +48,17 @@
     self.person.rect = CGRectMake(0, 0, 10, 10);
     self.person.rect = CGRectMake(1, 1, 11, 11);
     
+    
+    __weak typeof(self) weakSelf = self;
     /// tap点击
     [self.view TPTapActionWithBlock:^{
-        NSLog(@"");
+        TPKVOTestVC *vc = [[TPKVOTestVC alloc] initWithPerson:weakSelf.person];
+        [weakSelf.navigationController pushViewController:vc animated:YES];
     }];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(haha:) name:@"testtest" object:nil];
 }
+- (void)haha:(NSNotification *)notify {
+    self.person.name = @"kvo1111";
+}
+
 @end
