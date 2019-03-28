@@ -11,14 +11,8 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-static NSString *kvoObserverName;
 /// 子类前缀
 static NSString * const TPCustomKVOPrefix = @"TPNotify_";
-
-@interface NSObject(TPCustomKVOPrivate)
-- (TPCustomKVO *)TPCustomKVO;
-//- (NSMapTable *)TPKVOMap;
-@end
 
 #pragma mark ==================  Common method  ==================
 ///根据key获取setter方法名
@@ -120,8 +114,6 @@ static NSMutableArray<_TPObserverInfo_ *> *fetchInfoObjectFromSetterSEL(id obj, 
         }
     }
     return infos;
-//    TPCustomKVO *customKVO = [[obj TPKVOMap] valueForKey:kvoObserverName];
-//    return [customKVO.infoContainer objectForKey:keyPath];
 }
 
 /// 当进行赋值操作时，触发block

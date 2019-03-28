@@ -28,8 +28,6 @@ static char kTPKVOMapKey;
     }
     return NO;
 }
-
-
 /**
  TPKVOMap的作用:
  每一个观察者对应一个TPCustomKVO对象，TPCustomKVO对象面管理一个不同key的处理的字典
